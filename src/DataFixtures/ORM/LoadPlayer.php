@@ -14,20 +14,21 @@ class LoadPlayer extends Fixture
         $faker = Factory::create();
 
         $players = [
-            $faker->name => 'shotgun',
-            $faker->name => 'shotgun',
-            $faker->name => 'sniper',
-            $faker->name => 'm4',
-            $faker->name => 'm4',
-            $faker->name => 'm4',
-            $faker->name => 'handgun',
-            $faker->name => 'handgun',
+            $faker->name => ['shotgun','small'],
+            $faker->name => ['shotgun','large'],
+            $faker->name => ['sniper','extra_large'],
+            $faker->name => ['m4',null],
+            $faker->name => ['m4',null],
+            $faker->name => ['m4',null],
+            $faker->name => ['handgun',null],
+            $faker->name => ['handgun',null],
         ];
 
-        foreach ($players as $name => $weapon) {
+        foreach ($players as $name => $equipement) {
             $player = new Player();
             $player->setName($name);
-            $player->setCurrentWeapon($this->getReference($weapon));
+            $player->setCurrentWeapon($this->getReference($equipement[0]));
+            $player->addPotion($this->getReference($equipement[1]));
 
             $manager->persist($player);
         }
@@ -37,6 +38,6 @@ class LoadPlayer extends Fixture
 
     public function getDependencies()
     {
-        return [LoadWeapon::class];
+        return [LoadWeapon::class, LoadPotion::class];
     }
 }
